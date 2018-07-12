@@ -40,6 +40,23 @@ class Fold(Module):
 
     * :attr:`dilation` controls the spacing between the kernel points; also known as the à trous algorithm.
       It is harder to describe, but this `link`_ has a nice visualization of what :attr:`dilation` does.
+    
+    De-interleaves vectors of length :math:`\prod(kernel_size)` from the "channel"
+    dimension of the input tensor to generate blocks of size :math:`kernel_size`
+    of the output.  These blocks populate the "spatial" dimensions [2:]
+    of the output via a sliding window with positions determined by the
+    padding, stride and dilation values.  The "channel" dimension 1 of the output
+    is determined by the vectors interleaevd position in the "channel" dimension
+    of the input.
+
+    Each element of the output batch dimension 0 has :math:`C / \prod(kernel_size)`
+    channels (dimension 1) and spatial dimensions [2:] of shape :math:`output_size`.
+
+    | If :attr:`padding` is non-zero, then the input is implicitly
+    zero-padded on both sides by :attr:`padding` number of points
+    | :attr:`dilation` controls the internal spacing between the kernel points in the output.
+    It is harder to describe, but this `link`_ has a nice visualization of what
+    dilation does.
 
     Args:
         output_size (int or tuple): the shape of the spatial dimensions [2:] of the output
