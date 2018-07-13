@@ -23,6 +23,7 @@ _flatten = torch._C._jit_flatten
 _unflatten = torch._C._jit_unflatten
 _jit_script_compile = torch._C._jit_script_compile
 
+
 @contextlib.contextmanager
 def scope(scope_name):
     tracing_state = torch._C._get_tracing_state()
@@ -95,7 +96,7 @@ class LegacyTracedModule(Module):
             out = self.inner(*trace_inputs)
             out_vars, _ = _flatten(out)
             torch._C._tracer_exit(out_vars)
-        except:
+        except Exception:
             torch._C._tracer_abandon()
             raise
         return trace, out
